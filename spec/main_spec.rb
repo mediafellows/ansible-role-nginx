@@ -3,6 +3,9 @@ require 'spec_helper'
 describe "Nginx setup" do
   describe package('nginx') do
     it { should be_installed }
+    if ANSIBLE_VARS.fetch('nginx_official_repo', false)
+      its(:version) { should > '1.8.0' }
+    end
   end
 
   describe service('nginx') do
