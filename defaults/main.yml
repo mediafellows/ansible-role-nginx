@@ -16,10 +16,6 @@ nginx_official_repo: False
 
 keep_only_specified: False
 
-nginx_status_page: "stub_status/"
-nginx_nr_agent_installation: True
-# "{% if nr_licence_key is defined and nginx_official_repo == True }True{% else %}False{% endif %}"
-
 nginx_installation_type: "packages"
 nginx_binary_name: "nginx"
 nginx_service_name: "{{nginx_binary_name}}"
