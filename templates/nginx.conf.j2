@@ -1,13 +1,9 @@
 #{{ ansible_managed }}
 user              {{ nginx_user }}  {{ nginx_group }};
-
 worker_processes  {{ nginx_worker_processes }};
-
 {% if nginx_pid_file %}
 pid        {{ nginx_pid_file }};
 {% endif %}
-
-worker_rlimit_nofile {{ nginx_worker_rlimit_nofile }};
 
 events {
 {% for v in nginx_events_params %}
@@ -17,12 +13,11 @@ events {
 
 
 http {
-
-        include {{ nginx_conf_dir }}/mime.types;
-        default_type application/octet-stream;
 {% for v in nginx_http_params %}
         {{ v }};
 {% endfor %}
+        include {{ nginx_conf_dir }}/mime.types;
+        default_type application/octet-stream;
 
         include {{ nginx_conf_dir }}/conf.d/*.conf;
         include {{ nginx_conf_dir }}/sites-enabled/*;

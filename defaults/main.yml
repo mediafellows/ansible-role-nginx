@@ -16,6 +16,10 @@ nginx_official_repo: False
 
 keep_only_specified: False
 
+nginx_status_page: "stub_status/"
+nginx_nr_agent_installation: True
+# "{% if nr_licence_key is defined and nginx_official_repo == True }True{% else %}False{% endif %}"
+
 nginx_installation_type: "packages"
 nginx_binary_name: "nginx"
 nginx_service_name: "{{nginx_binary_name}}"
@@ -27,22 +31,25 @@ nginx_group: "{{nginx_user}}"
 nginx_pid_file: '/var/run/{{nginx_service_name}}.pid'
 
 nginx_worker_processes: "{{ ansible_processor_vcpus }}"
-nginx_worker_rlimit_nofile: 1024
+# nginx_worker_rlimit_nofile: 1024
 nginx_log_dir: "/var/log/nginx"
 
 nginx_events_params:
   - worker_connections {% if nginx_max_clients is defined %}{{nginx_max_clients}}{% else %}512{% endif %}
 
 nginx_http_params:
-  - sendfile "on"
-  - tcp_nopush "on"
-  - tcp_nodelay "on"
-  - keepalive_timeout "65"
-  - access_log "{{nginx_log_dir}}/access.log"
-  - error_log "{{nginx_log_dir}}/error.log"
-  - server_tokens off
-  - types_hash_max_size 2048
-
+      - sendfile on
+      - tcp_nopush on
+      - tcp_nodelay on
+      - keepalive_timeout 65
+      - types_hash_max_size 2048
+      - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
+      - ssl_prefer_server_ciphers on
+      - gzip on
+      - gzip_disable "msie6"
+      - log_format graylog_format '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" <msec=$msec|connection=$connection|connection_requests=$connection_requests|millis=$request_time>'
+      - access_log "{{nginx_log_dir}}/access.log"
+      - error_log "{{nginx_log_dir}}/error.log"
 nginx_sites:
   default:
      - listen 80 default_server
