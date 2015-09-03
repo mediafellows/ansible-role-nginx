@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mediapeers/ansible-role-nginx.svg)](https://travis-ci.org/mediapeers/ansible-role-nginx)
+
 Nginx role
 ==========
 
