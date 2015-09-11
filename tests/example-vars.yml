@@ -38,7 +38,7 @@ nginx_sites:
       - root "/tmp/site1"
       - location / { try_files $uri $uri/ /index.html; }
       - location /images/ { try_files $uri $uri/ /index.html; }
-      - location /proxy { proxy_redirect off; http://test; }
+      - location /proxy { proxy_redirect off; prox_pass http://test; }
     upstream:
       test: 'server unix:/tmp/some.sock fail_timeout=0;'
   bar:
