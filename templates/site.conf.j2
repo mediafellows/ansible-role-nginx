@@ -1,12 +1,12 @@
 #{{ ansible_managed }}
-{% for upstream in nginx_sites[item][upstream] %}
-upstream {{upstream.key}} {
-  {{ upstream.value }}
+{% for name, conf in nginx_sites[item]['upstream'].iteritems() %}
+upstream {{ name }} {
+  {{ conf.replace(";",";\n      ") }}
 }
 {% endfor %}
 
 server {
-{% for v in nginx_sites[item][server] %}
+{% for v in nginx_sites[item]['server'] %}
 {% if v.find('\n') != -1 %}
    {{v.replace("\n","\n   ")}}
 {% else %}

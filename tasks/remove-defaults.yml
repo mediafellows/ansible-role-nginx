@@ -7,7 +7,15 @@
   - reload nginx
   tags: [configuration,nginx]
 
-- name: Remove the default configuration
+- name: Remove the default site config
+  file:
+    path: "{{nginx_conf_dir}}/sites-available/default"
+    state: absent
+  notify:
+  - reload nginx
+  tags: [configuration,nginx]
+
+- name: Remove the default configuration in conf.d
   file:
     path: "{{nginx_conf_dir}}/conf.d/default.conf"
     state: absent
