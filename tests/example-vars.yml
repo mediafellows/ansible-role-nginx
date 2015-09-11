@@ -28,9 +28,9 @@ nginx_sites:
   default:
     server:
       - listen 80
-     - server_name _
-     - root "/usr/share/nginx/html"
-     - index index.html
+      - server_name _
+      - root "/usr/share/nginx/html"
+      - index index.html
 foo:
   server:
     - listen 8080
@@ -40,7 +40,7 @@ foo:
     - location /images/ { try_files $uri $uri/ /index.html; }
     - location /proxy { proxy_redirect off; http://test; }
   upstream:
-    - test: { server http:localhost:8080; }
+    - test: { 'server http://localhost:8080;' }
 bar:
   server:
     - listen 9090
