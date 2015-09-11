@@ -40,10 +40,6 @@
   with_items: nginx_auth_basic_files.keys()
   tags: [configuration,nginx]
 
-- name: DEBUG output
-  debug:
-    msg: "{{ nginx_sites['default']['upstream'] }}"
-
 - name: Create the configurations for sites
   template:
     src: site.conf.j2
