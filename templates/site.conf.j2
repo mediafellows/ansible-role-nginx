@@ -1,9 +1,12 @@
 #{{ ansible_managed }}
+
+{% if nginx_sites[item]['upstream'] is defined %}
 {% for name, conf in nginx_sites[item]['upstream'].iteritems() %}
 upstream {{ name }} {
   {{ conf.replace(";",";\n      ") }}
 }
 {% endfor %}
+{% endif %}
 
 server {
 {% for v in nginx_sites[item]['server'] %}
