@@ -40,7 +40,7 @@ nginx_sites:
       - location /images/ { try_files $uri $uri/ /index.html; }
       - location /proxy { proxy_redirect off; http://test; }
     upstream:
-      test: 'server http://localhost:9090;'
+      test: 'server http://127.0.0.1:9090;'
   bar:
     server:
       - listen 9090
