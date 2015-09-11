@@ -26,17 +26,23 @@ nginx_http_params:
 
 nginx_sites:
  default:
+   server:
      - listen 80
      - server_name _
      - root "/usr/share/nginx/html"
      - index index.html
  foo:
+   server:
      - listen 8080
      - server_name localhost
      - root "/tmp/site1"
      - location / { try_files $uri $uri/ /index.html; }
      - location /images/ { try_files $uri $uri/ /index.html; }
+     - location /proxy { proxy_redirect off; http://test; }
+  upstream:
+    - test: { server http:localhost:8080; }
  bar:
+   server:
      - listen 9090
      - server_name ansible
      - root "/tmp/site2"
@@ -49,6 +55,7 @@ nginx_sites:
      - auth_basic            "Restricted"
      - auth_basic_user_file  auth_basic/demo
  hhvm_test:
+   server:
      - |
        listen 80;
        server_name test_hhvm;

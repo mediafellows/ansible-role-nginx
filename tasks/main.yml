@@ -1,16 +1,23 @@
 ---
-- include: nginx-official-repo.yml
-  when: nginx_official_repo == True
-- include: installation.packages.yml
-  when: nginx_installation_type == "packages"
+# Setup repo (optional) and install:
+- include: nginx-repo.yml
+  when: nginx_repo is defined
+- include: nginx-installation.yml
+
+# Remove default configs and configs not managed by thins role (optional):
 - include: remove-defaults.yml
-  when: not keep_only_specified
 - include: remove-extras.yml
   when: keep_only_specified
+
+# Specifically delete configs defined in array vars
 - include: remove-unwanted.yml
+
+# Do the configuration of Nginx and it's sites
 - include: configuration.yml
 
-- name: Start the nginx service
-  service: name={{ nginx_service_name }} state=started enabled=yes
-  when: nginx_installation_type in nginx_installation_types_using_service and nginx_daemon_mode == "on"
+- name: Start and enable the nginx service
+  service:
+    name: "{{ nginx_service_name }}"
+    state: started
+    enabled: yes
   tags: [service,nginx]

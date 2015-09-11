@@ -1,20 +1,9 @@
 ---
 galaxy_info:
-  author: "DAUPHANT Julien"
+  author: "DAUPHANT Julien, Stefan Horning"
   license: BSD
   min_ansible_version: 1.4
   platforms:
-   - name: EL
-     versions:
-      - 5
-      - 6
-   - name: Fedora
-     versions:
-      - 16
-      - 17
-      - 18
-      - 19
-      - 20
    - name: Ubuntu
      versions:
       - precise
@@ -22,10 +11,7 @@ galaxy_info:
       - raring
       - saucy
       - trusty
-   - name: FreeBSD
-     versions:
-      - 10
-  categories:
+     categories:
    - web
 dependencies: []
 

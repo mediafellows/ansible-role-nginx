@@ -1,28 +1,22 @@
 #{{ ansible_managed }}
 user              {{ nginx_user }}  {{ nginx_group }};
 worker_processes  {{ nginx_worker_processes }};
-{% if nginx_pid_file %}
-pid        {{ nginx_pid_file }};
-{% endif %}
+pid               {{ nginx_pid_file }};
 
 events {
-{% for v in nginx_events_params %}
-        {{ v }};
+{% for param in nginx_events_params %}
+        {{ param }};
 {% endfor %}
 }
 
-
 http {
-{% for v in nginx_http_params %}
-        {{ v }};
+{% for param in nginx_http_params %}
+        {{ param }};
 {% endfor %}
         include {{ nginx_conf_dir }}/mime.types;
         default_type application/octet-stream;
 
+        # Virtual Server configs:
         include {{ nginx_conf_dir }}/conf.d/*.conf;
         include {{ nginx_conf_dir }}/sites-enabled/*;
 }
-
-{% if nginx_daemon_mode == "off" %}
-daemon off;
-{% endif %}

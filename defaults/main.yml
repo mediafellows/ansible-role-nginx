@@ -1,57 +1,43 @@
 ---
-nginx_redhat_pkg:
-  - nginx
+nginx_repo: "ppa:nginx/stable"
 
-nginx_ubuntu_pkg:
-  - python-selinux
-  - nginx
-
-nginx_freebsd_pkg:
-  - nginx
-
-yum_epel_repo: epel
-yum_base_repo: base
-
-nginx_official_repo: False
-
-keep_only_specified: False
-
-nginx_installation_type: "packages"
 nginx_binary_name: "nginx"
 nginx_service_name: "{{nginx_binary_name}}"
-nginx_conf_dir: "{% if ansible_os_family == 'FreeBSD' %}/usr/local/etc/nginx{% else %}/etc/nginx{% endif %}"
+nginx_conf_dir: "/etc/nginx"
 
-nginx_user: "{% if ansible_os_family == 'RedHat' %}nginx{% elif ansible_os_family == 'Debian' %}www-data{% elif ansible_os_family == 'FreeBSD' %}www{% endif %}"
+nginx_user: "www-data"
 nginx_group: "{{nginx_user}}"
 
 nginx_pid_file: '/var/run/{{nginx_service_name}}.pid'
 
-nginx_worker_processes: "{{ ansible_processor_vcpus }}"
-# nginx_worker_rlimit_nofile: 1024
+nginx_worker_processes: "{{ ansible_processor_vcpus }}" # use number or auto
 nginx_log_dir: "/var/log/nginx"
 
 nginx_events_params:
-  - worker_connections {% if nginx_max_clients is defined %}{{nginx_max_clients}}{% else %}512{% endif %}
+  - worker_connections {% if nginx_max_clients is defined %}{{nginx_max_clients}}{% else %}768{% endif %}
 
 nginx_http_params:
-      - sendfile on
-      - tcp_nopush on
-      - tcp_nodelay on
-      - keepalive_timeout 65
-      - types_hash_max_size 2048
-      - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
-      - ssl_prefer_server_ciphers on
-      - gzip on
-      - gzip_disable "msie6"
-      - log_format graylog_format '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" <msec=$msec|connection=$connection|connection_requests=$connection_requests|millis=$request_time>'
-      - access_log "{{nginx_log_dir}}/access.log"
-      - error_log "{{nginx_log_dir}}/error.log"
+  - sendfile on
+  - tcp_nopush on
+  - tcp_nodelay on
+  - keepalive_timeout 65
+  - types_hash_max_size 2048
+  - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
+  - ssl_prefer_server_ciphers on
+  - gzip on
+  - gzip_disable "msie6"
+  - log_format graylog_format '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" <msec=$msec|connection=$connection|connection_requests=$connection_requests|millis=$request_time>'
+  - access_log "{{nginx_log_dir}}/access.log"
+  - error_log "{{nginx_log_dir}}/error.log"
 nginx_sites:
   default:
-     - listen 80 default_server
-     - server_name _
-     - root "{% if ansible_os_family == 'FreeBSD' %}/usr/local/www/nginx-dist{% else %}/usr/share/nginx/html{% endif %}"
-     - index index.html
+    server:
+      - listen 80 default_server
+      - server_name _
+      - location / { root /var/www/default; index index.html index.htm; }
+      - location /proxy { proxy_redirect off; proxy_pass http://test; }
+    upstream:
+      - test: { server unix:/tmp/some.sock fail_timeout=0; }
 nginx_remove_sites: []
 
 nginx_configs: {}
@@ -60,4 +46,5 @@ nginx_remove_configs: []
 nginx_auth_basic_files: {}
 nginx_remove_auth_basic_files: []
 
-nginx_daemon_mode: "on"
+# Keeps only configs managed by this role if true
+keep_only_specified: True

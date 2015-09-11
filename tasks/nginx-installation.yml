@@ -1,0 +1,5 @@
+---
+- name: Install the nginx package
+  apt: name=nginx state=present
+  tags: [packages,nginx]
+
