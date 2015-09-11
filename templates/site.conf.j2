@@ -6,8 +6,8 @@ upstream {{ name }} {
   {{ conf.replace(";",";\n      ") }}
 }
 {% endfor %}
-{% endif %}
 
+{% endif %}
 server {
 {% for v in nginx_sites[item]['server'] %}
 {% if v.find('\n') != -1 %}
