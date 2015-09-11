@@ -1,17 +1,17 @@
 ---
 nginx_repo: "ppa:nginx/stable"
 
-nginx_binary_name: "nginx"
+nginx_binary_name: nginx
 nginx_service_name: "{{nginx_binary_name}}"
-nginx_conf_dir: "/etc/nginx"
+nginx_conf_dir: /etc/nginx
 
 nginx_user: "www-data"
 nginx_group: "{{nginx_user}}"
 
-nginx_pid_file: '/var/run/{{nginx_service_name}}.pid'
+nginx_pid_file: /var/run/{{nginx_service_name}}.pid
 
-nginx_worker_processes: "{{ ansible_processor_vcpus }}" # use number or auto
-nginx_log_dir: "/var/log/nginx"
+nginx_worker_processes: auto # use number or auto
+nginx_log_dir: /var/log/nginx
 
 nginx_events_params:
   - worker_connections {% if nginx_max_clients is defined %}{{nginx_max_clients}}{% else %}768{% endif %}
@@ -38,13 +38,9 @@ nginx_sites:
       - location /proxy { proxy_redirect off; proxy_pass http://test; }
     upstream:
       test: 'server unix:/tmp/some.sock fail_timeout=0;'
-nginx_remove_sites: []
 
 nginx_configs: {}
-nginx_remove_configs: []
-
 nginx_auth_basic_files: {}
-nginx_remove_auth_basic_files: []
 
 # Keeps only configs managed by this role if true
 keep_only_specified: True

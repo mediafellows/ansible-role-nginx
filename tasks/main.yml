@@ -9,9 +9,6 @@
 - include: remove-extras.yml
   when: keep_only_specified
 
-# Specifically delete configs defined in array vars
-- include: remove-unwanted.yml
-
 # Do the configuration of Nginx and it's sites
 - include: configuration.yml
 

@@ -1,11 +1,14 @@
 require 'spec_helper'
 
 describe "Nginx setup" do
+  describe ppa('nginx/stable') do
+    it { should exist }
+    it { should be_enabled }
+  end
+
   describe package('nginx') do
     it { should be_installed }
-    if ANSIBLE_VARS.fetch('nginx_official_repo', false)
-      its(:version) { should > '1.8.0' }
-    end
+    its(:version) { should > '1.8.0' }
   end
 
   describe service('nginx') do
@@ -20,10 +23,26 @@ describe "Nginx setup" do
 
   describe file('/etc/nginx/sites-available/') do
     it { should be_directory }
+    it { should be_owned_by('root') }
+    it { should be_grouped_into('www-data') }
   end
 
   describe file('/etc/nginx/sites-enabled/') do
     it { should be_directory }
+    it { should be_owned_by('root') }
+    it { should be_grouped_into('www-data') }
+  end
+
+  describe file('/etc/nginx/auth_basic/') do
+    it { should be_directory }
+    it { should be_owned_by('root') }
+    it { should be_grouped_into('www-data') }
+  end
+
+  describe file('/etc/nginx/conf.d/') do
+    it { should be_directory }
+    it { should be_owned_by('root') }
+    it { should be_grouped_into('www-data') }
   end
 
   describe file('/etc/nginx/sites-enabled/default') do
@@ -37,7 +56,8 @@ describe "Nginx setup" do
   ANSIBLE_VARS.fetch('nginx_sites', nil).each do |name, config|
     describe file("/etc/nginx/sites-available/#{name}.conf") do
       it { should be_file }
-      it { should contain "#{config.join(";\n")}" }
+      it { should contain "#{config['server'].join(";\n")}" }
+      it { should contain "upstream #{config['upstream'].first.first} {" } if config['upstream']
     end
   end
 
