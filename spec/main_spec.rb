@@ -18,7 +18,8 @@ describe "Nginx setup" do
 
   describe file('/etc/nginx/nginx.conf') do
     it { should be_file }
-    its(:content) { should include(ANSIBLE_VARS.fetch('nginx_http_params', 'FAIL').join(";\n")) }
+    config_string = ANSIBLE_VARS.fetch('nginx_http_params', 'FAIL').join(";\n        ")
+    its(:content) { should include("        #{config_string}") }
   end
 
   describe file('/etc/nginx/sites-available/') do
