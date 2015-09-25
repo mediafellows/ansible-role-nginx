@@ -18,7 +18,7 @@ describe "Nginx setup" do
 
   describe file('/etc/nginx/nginx.conf') do
     it { should be_file }
-    it { should contain ANSIBLE_VARS.fetch('nginx_http_params', 'FAIL').join(";\n") }
+    its(:content) { should include(ANSIBLE_VARS.fetch('nginx_http_params', 'FAIL').join(";\n")) }
   end
 
   describe file('/etc/nginx/sites-available/') do
@@ -56,8 +56,8 @@ describe "Nginx setup" do
   ANSIBLE_VARS.fetch('nginx_sites', nil).each do |name, config|
     describe file("/etc/nginx/sites-available/#{name}.conf") do
       it { should be_file }
-      it { should contain "#{config['server'].join(";\n")}" }
-      it { should contain "upstream #{config['upstream'].first.first} {" } if config['upstream']
+      its(:content) { should include(config['server'].join(";\n")) }
+      its(:content) { should include("upstream #{config['upstream'].first.first} {") } if config['upstream']
     end
   end
 
