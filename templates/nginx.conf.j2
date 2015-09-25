@@ -5,18 +5,18 @@ pid               {{ nginx_pid_file }};
 
 events {
 {% for param in nginx_events_params %}
-        {{ param }};
+  {{ param }};
 {% endfor %}
 }
 
 http {
 {% for param in nginx_http_params %}
-        {{ param }};
+  {{ param }};
 {% endfor %}
-        include {{ nginx_conf_dir }}/mime.types;
-        default_type application/octet-stream;
+  include {{ nginx_conf_dir }}/mime.types;
+  default_type application/octet-stream;
 
-        # Virtual Server configs:
-        include {{ nginx_conf_dir }}/conf.d/*.conf;
-        include {{ nginx_conf_dir }}/sites-enabled/*;
+  # Virtual Host configs:
+  include {{ nginx_conf_dir }}/conf.d/*.conf;
+  include {{ nginx_conf_dir }}/sites-enabled/*;
 }

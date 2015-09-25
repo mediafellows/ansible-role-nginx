@@ -18,8 +18,9 @@ describe "Nginx setup" do
 
   describe file('/etc/nginx/nginx.conf') do
     it { should be_file }
-    config_string = ANSIBLE_VARS.fetch('nginx_http_params', 'FAIL').join(";\n        ")
-    its(:content) { should include("        #{config_string}") }
+    config_string = ANSIBLE_VARS.fetch('nginx_http_params', 'FAIL').join(";\n  ")
+    config_string.gsub!(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
+    its(:content) { should include("  #{config_string}") }
   end
 
   describe file('/etc/nginx/sites-available/') do
@@ -57,7 +58,10 @@ describe "Nginx setup" do
   ANSIBLE_VARS.fetch('nginx_sites', nil).each do |name, config|
     describe file("/etc/nginx/sites-available/#{name}.conf") do
       it { should be_file }
-      its(:content) { should include(config['server'].join(";\n")) }
+      server_config = config['server'].join("-").gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
+      server_config_string = "server {\n  #{server_config.gsub(";", ";\n      ").gsub("-", ";\n  ").gsub("{", "{\n      ").gsub("};", "}").gsub("    }", "    \n   }")}\n}"
+      :q
+      its(:content) { should match(server_config_string) }
       its(:content) { should include("upstream #{config['upstream'].first.first} {") } if config['upstream']
     end
   end
