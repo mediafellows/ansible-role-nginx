@@ -59,7 +59,7 @@ describe "Nginx setup" do
     describe file("/etc/nginx/sites-available/#{name}.conf") do
       it { should be_file }
       server_config = config['server'].join("-").gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
-      server_config_string = "server {\n  #{server_config.gsub(";", ";\n      ").gsub("-", ";\n  ").gsub("{", "{\n      ").gsub("};", "}").gsub("    }", "    \n   }")}\n}"
+      server_config_string = "server {\n  #{server_config.gsub(";", ";\n    ").gsub("-", ";\n  ").gsub("{", "{\n    ").gsub("};", "}").gsub("    }", "    \n   }")}\n}"
       :q
       its(:content) { should match(server_config_string) }
       its(:content) { should include("upstream #{config['upstream'].first.first} {") } if config['upstream']
