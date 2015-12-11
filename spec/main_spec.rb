@@ -60,9 +60,19 @@ describe "Nginx setup" do
       it { should be_file }
       server_config = config['server'].join("-").gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
       server_config_string = "server {\n  #{server_config.gsub(";", ";\n    ").gsub("-", ";\n  ").gsub("{", "{\n    ").gsub("};", "}").gsub("    }", "    \n   }")}\n}"
-      :q
       its(:content) { should match(server_config_string) }
       its(:content) { should include("upstream #{config['upstream'].first.first} {") } if config['upstream']
+    end
+  end
+
+  ANSIBLE_VARS.fetch('nginx_sites', nil).each do |name, config|
+    describe file("/etc/nginx/sites-available/#{name}.conf") do
+      if config['upstream_group']
+        its(:content) { should include("upstream #{config['upstream_group']['name']} {") }
+
+        server_config = config['upstream_group']['base_string'].gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
+        its(:content) { should include(server_config.gsub('$#', '0')) }
+      end
     end
   end
 
