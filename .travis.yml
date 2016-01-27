@@ -19,9 +19,9 @@ install:
 
 script:
   - ansible-playbook -i $INVENTORY --syntax-check --list-tasks $TEST_PLAY
-  - ansible-playbook -i $INVENTORY --connection=local --sudo $TEST_PLAY
+  - ansible-playbook -i $INVENTORY --connection=local $TEST_PLAY
   - >
-      ansible-playbook -i $INVENTORY --connection=local --sudo $TEST_PLAY
+      ansible-playbook -i $INVENTORY --connection=local $TEST_PLAY
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)
