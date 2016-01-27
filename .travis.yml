@@ -1,6 +1,7 @@
 ---
 sudo: required
 dist: trusty
+
 language: python
 python: "2.7"
 
@@ -8,35 +9,44 @@ env:
   - INVENTORY=tests/inventory; TEST_PLAY=tests/test.yml
 
 before_install:
- - sudo apt-get update -qq
- - sudo apt-get install -qq python-apt python-pycurl
+  - sudo apt-get update -qq
+  # Clean up all the weird rubies (none coming from apt packages) from system
+  - sudo rm /usr/bin/ruby /usr/bin/gem
 
 install:
+  # Setup ruby 2.0 for root
+  - sudo apt-get install -y ruby2.0
+  - sudo ln -s /usr/bin/ruby2.0 /usr/bin/ruby
+  - sudo ln -s /usr/bin/gem2.0 /usr/bin/gem
+  - sudo ln -s /usr/bin/rake2.0 /usr/bin/rake
+
+  # Install serverspec as root
+  - sudo ruby -v
+  - sudo gem install serverspec
+
+  # Install Ansible
   - pip install ansible
   - ansible --version
+
   # Add ansible.cfg to pick up roles path.
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 
 script:
-  - ansible-playbook -i $INVENTORY --syntax-check --list-tasks $TEST_PLAY
+  # Check the role/playbook's syntax.
+  - ansible-playbook -i $INVENTORY --syntax-check $TEST_PLAY
+
+  # Run the role/playbook with ansible-playbook.
   - ansible-playbook -i $INVENTORY --connection=local $TEST_PLAY
+
+  # Run the role/playbook again, checking to make sure it's idempotent.
   - >
-      ansible-playbook -i $INVENTORY --connection=local $TEST_PLAY
-      | grep -q 'changed=0.*failed=0'
-      && (echo 'Idempotence test: pass' && exit 0)
-      || (echo 'Idempotence test: fail' && exit 1)
-  - cat /etc/nginx/nginx.conf
-  - cat /etc/nginx/sites-enabled/default.conf
-  - cat /etc/nginx/sites-enabled/foo.conf
-  - cat /etc/nginx/sites-enabled/bar.conf
-  - cat /etc/nginx/conf.d/proxy.conf
-  - cat /etc/nginx/conf.d/upstream.conf
-  - cat /etc/nginx/conf.d/geo.conf
-  - cat /etc/nginx/conf.d/gzip.conf
-  - sudo cat /etc/nginx/auth_basic/demo
+    ansible-playbook -i $INVENTORY --connection=local $TEST_PLAY
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+  # Run nginx config test
   - sudo nginx -t
 
-after_script:
-  - ls /etc/nginx/auth_basic/
-  - ls /etc/nginx/conf.d/
-  - ls /etc/nginx/sites-enabled/
+  # Run serverspec
+  - sudo rake spec
