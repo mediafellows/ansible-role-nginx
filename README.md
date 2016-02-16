@@ -31,31 +31,39 @@ nginx_events_params:
  - use epoll
  - multi_accept on
 
-# A list of hashs that define the servers for nginx,
+# A list of hashes that define the servers for nginx,
 # as with http parameters. Any valid server parameters
-# can be defined here.
+# can be defined here. Also allows upstream definitions
 nginx_sites:
- default:
-     - listen 80
-     - server_name _
-     - root "/usr/share/nginx/html"
-     - index index.html
- foo:
-     - listen 8080
-     - server_name localhost
-     - root "/tmp/site1"
-     - location / { try_files $uri $uri/ /index.html; }
-     - location /images/ { try_files $uri $uri/ /index.html; }
- bar:
-     - listen 9090
-     - server_name ansible
-     - root "/tmp/site2"
-     - location / { try_files $uri $uri/ /index.html; }
-     - location /images/ {
-         try_files $uri $uri/ /index.html;
-         allow 127.0.0.1;
-         deny all;
-       }
+  -
+    name: default
+    server:
+      - listen 80 default_server
+      - server_name _
+      - location / { root /var/www/default; index index.html index.htm; }
+      - location /proxy { proxy_redirect off; proxy_pass http://test; }
+    upstream:
+      test: 'server unix:/tmp/some.sock fail_timeout=0'
+  -
+    name: foo
+    server:
+      - listen 8080
+      - server_name localhost
+      - root "/tmp/site1"
+      - location / { try_files $uri $uri/ /index.html; }
+      - location /images/ { try_files $uri $uri/ /index.html; }
+  -
+    name: bar
+    server:
+      - listen 9090
+      - server_name ansible
+      - root "/tmp/site2"
+      - location / { try_files $uri $uri/ /index.html; }
+      - location /images/ {
+          try_files $uri $uri/ /index.html;
+          allow 127.0.0.1;
+          deny all;
+        }
 
 # A list of hashs that define additional configuration
 nginx_configs:
