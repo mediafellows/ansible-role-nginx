@@ -55,29 +55,29 @@ describe "Nginx setup" do
     it { should_not exist }
   end
 
-  ANSIBLE_VARS.fetch('nginx_sites', nil).each do |name, config|
-    describe file("/etc/nginx/sites-available/#{name}.conf") do
+  ANSIBLE_VARS.fetch('nginx_sites', nil).each do |site|
+    describe file("/etc/nginx/sites-available/#{site['name']}.conf") do
       it { should be_file }
-      server_config = config['server'].join("-").gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
+      server_config = site['server'].join("-").gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
       server_config_string = "server {\n  #{server_config.gsub(";", ";\n    ").gsub("-", ";\n  ").gsub("{", "{\n    ").gsub("};", "}").gsub("    }", "    \n   }")}\n}"
       its(:content) { should match(server_config_string) }
-      its(:content) { should include("upstream #{config['upstream'].first.first} {") } if config['upstream']
+      its(:content) { should include("upstream #{site['upstream'].first.first} {") } if site['upstream']
     end
   end
 
-  ANSIBLE_VARS.fetch('nginx_sites', nil).each do |name, config|
-    describe file("/etc/nginx/sites-available/#{name}.conf") do
-      if config['upstream_group']
-        its(:content) { should include("upstream #{config['upstream_group']['name']} {") }
+  ANSIBLE_VARS.fetch('nginx_sites', nil).each do |site|
+    describe file("/etc/nginx/sites-available/#{site['name']}.conf") do
+      if site['upstream_group']
+        its(:content) { should include("upstream #{site['upstream_group']['name']} {") }
 
-        server_config = config['upstream_group']['base_string'].gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
+        server_config = site['upstream_group']['base_string'].gsub(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
         its(:content) { should include(server_config.gsub('$#', '0')) }
       end
     end
   end
 
-  ANSIBLE_VARS.fetch('nginx_sites', nil).each do |name, config|
-    describe file("/etc/nginx/sites-enabled/#{name}.conf") do
+  ANSIBLE_VARS.fetch('nginx_sites', nil).each do |site|
+    describe file("/etc/nginx/sites-enabled/#{site['name']}.conf") do
       it { should be_symlink }
     end
   end

@@ -7,7 +7,7 @@
 
 - name: Get names of configured sites
   set_fact:
-    configured_sites: "{{ nginx_sites | map(attributes='name') | list }}"
+    configured_sites: "{{ nginx_sites | map(attribute='name') | list }}"
 
 - name: Disable unmanaged sites
   file: path={{nginx_conf_dir}}/sites-enabled/{{ item }} state=absent
