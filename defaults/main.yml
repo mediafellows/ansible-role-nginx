@@ -30,7 +30,8 @@ nginx_http_params:
   - access_log "{{nginx_log_dir}}/access.log"
   - error_log "{{nginx_log_dir}}/error.log"
 nginx_sites:
-  default:
+  -
+    name: default
     server:
       - listen 80 default_server
       - server_name _
