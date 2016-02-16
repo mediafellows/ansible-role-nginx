@@ -33,15 +33,15 @@ nginx_events_params:
 
 # A list of hashes that define the servers for nginx,
 # as with http parameters. Any valid server parameters
-# can be defined here.
+# can be defined here. Also allows upstream definitions
 nginx_sites:
   -
     name: default
     server:
-      - listen 80
+      - listen 80 default_server
       - server_name _
-      - root "/usr/share/nginx/html"
-      - index index.html
+      - location / { root /var/www/default; index index.html index.htm; }
+      - location /proxy { proxy_redirect off; proxy_pass http://test; }
     upstream:
       test: 'server unix:/tmp/some.sock fail_timeout=0'
   -
