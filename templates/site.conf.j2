@@ -1,15 +1,15 @@
 #{{ ansible_managed }}
 
-{% if nginx_sites[item]['upstream_group'] is defined %}
-upstream {{ nginx_sites[item]['upstream_group']['name'] }} {
-{% for number in range(0, nginx_sites[item]['upstream_group']['size']|int) %}
-  {{ nginx_sites[item]['upstream_group']['base_string'].replace('$#', number|string) }}
+{% if item['upstream_group'] is defined %}
+upstream {{ item['upstream_group']['name'] }} {
+{% for number in range(0, item['upstream_group']['size']|int) %}
+  {{ item['upstream_group']['base_string'].replace('$#', number|string) }}
 {% endfor %}
 }
 {% endif %}
 
-{% if nginx_sites[item]['upstream'] is defined %}
-{% for name, conf in nginx_sites[item]['upstream'].iteritems() %}
+{% if item['upstream'] is defined %}
+{% for name, conf in item['upstream'].iteritems() %}
 upstream {{ name }} {
   {{ conf.replace(";",";\n      ") }}
 }
@@ -17,7 +17,7 @@ upstream {{ name }} {
 
 {% endif %}
 server {
-{% for v in nginx_sites[item]['server'] %}
+{% for v in item['server'] %}
 {% if v.find('\n') != -1 %}
   {{v.replace("\n","\n   ")}}
 {% else %}
