@@ -11,7 +11,7 @@ galaxy_info:
       - raring
       - saucy
       - trusty
-     categories:
+  categories:
    - web
 dependencies: []
 
