@@ -3,5 +3,6 @@
   become: true
   vars:
     test: test
+    nginx_cors: true
   roles:
     - ansible-role-nginx

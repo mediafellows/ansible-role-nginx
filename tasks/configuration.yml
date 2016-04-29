@@ -49,6 +49,15 @@
    - restart nginx
   tags: [configuration,nginx]
 
+- name: Add config file for CORS response headers and static OPTIONs reply
+  copy:
+    src: nginx-cors.conf
+    dest: "{{nginx_conf_dir}}/nginx-cors.conf"
+  notify:
+   - restart nginx
+  when: nginx_cors
+  tags: [configuration,nginx]
+
 - name: Create links to enable sites (in sites-enabled)
   file: state=link src={{nginx_conf_dir}}/sites-available/{{ item.name }}.conf dest={{nginx_conf_dir}}/sites-enabled/{{ item.name }}.conf
   with_items: nginx_sites
