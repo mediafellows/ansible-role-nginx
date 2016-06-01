@@ -15,7 +15,7 @@
   # 'item.conf' => 'item'
   when: item[:-5] not in configured_sites
   notify:
-   - reload nginx
+   - restart nginx
   tags: [configuration,nginx]
 
 - name: Find config files
@@ -30,6 +30,6 @@
   # 'item.conf' => 'item'
   when: item[:-5] not in nginx_configs.keys()
   notify:
-   - reload nginx
+   - restart nginx
   tags: [configuration,nginx]
 

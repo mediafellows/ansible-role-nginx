@@ -62,14 +62,14 @@
   file: state=link src={{nginx_conf_dir}}/sites-available/{{ item.name }}.conf dest={{nginx_conf_dir}}/sites-enabled/{{ item.name }}.conf
   with_items: nginx_sites
   notify:
-   - reload nginx
+   - restart nginx
   tags: [configuration,nginx]
 
 - name: Create the configurations for independent config file
   template: src=config.conf.j2 dest={{nginx_conf_dir}}/conf.d/{{ item }}.conf
   with_items: nginx_configs.keys()
   notify:
-   - reload nginx
+   - restart nginx
   tags: [configuration,nginx]
 
 - name: Check nginx syntax of configuration files

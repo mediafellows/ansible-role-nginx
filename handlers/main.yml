@@ -3,8 +3,3 @@
   service:
     name: "{{ nginx_service_name }}"
     state: restarted
-
-- name: reload nginx
-  service:
-    name: "{{ nginx_service_name }}"
-    state: reloaded
