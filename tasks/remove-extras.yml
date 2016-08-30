@@ -11,7 +11,7 @@
 
 - name: Disable unmanaged sites
   file: path={{nginx_conf_dir}}/sites-enabled/{{ item }} state=absent
-  with_items: enabled_sites.stdout_lines
+  with_items: '{{ enabled_sites.stdout_lines }}'
   # 'item.conf' => 'item'
   when: item[:-5] not in configured_sites
   notify:
@@ -26,7 +26,7 @@
 
 - name: Remove unmanaged config files
   file: name={{nginx_conf_dir}}/conf.d/{{ item }} state=absent
-  with_items: config_files.stdout_lines
+  with_items: '{{ config_files.stdout_lines }}'
   # 'item.conf' => 'item'
   when: item[:-5] not in nginx_configs.keys()
   notify:

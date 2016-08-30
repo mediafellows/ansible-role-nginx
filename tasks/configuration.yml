@@ -37,14 +37,14 @@
     owner: root
     group: "{{nginx_group}}"
     mode: 0750
-  with_items: nginx_auth_basic_files.keys()
+  with_items: '{{ nginx_auth_basic_files.keys() }}'
   tags: [configuration,nginx]
 
 - name: Create the configurations for sites
   template:
     src: site.conf.j2
     dest: "{{nginx_conf_dir}}/sites-available/{{ item.name }}.conf"
-  with_items: nginx_sites
+  with_items: '{{ nginx_sites }}'
   notify:
    - restart nginx
   tags: [configuration,nginx]
@@ -60,14 +60,14 @@
 
 - name: Create links to enable sites (in sites-enabled)
   file: state=link src={{nginx_conf_dir}}/sites-available/{{ item.name }}.conf dest={{nginx_conf_dir}}/sites-enabled/{{ item.name }}.conf
-  with_items: nginx_sites
+  with_items: '{{ nginx_sites }}'
   notify:
    - restart nginx
   tags: [configuration,nginx]
 
 - name: Create the configurations for independent config file
   template: src=config.conf.j2 dest={{nginx_conf_dir}}/conf.d/{{ item }}.conf
-  with_items: nginx_configs.keys()
+  with_items: '{{ nginx_configs.keys() }}'
   notify:
    - restart nginx
   tags: [configuration,nginx]
