@@ -1,21 +1,17 @@
 [![Build Status](https://travis-ci.org/mediapeers/ansible-role-nginx.svg)](https://travis-ci.org/mediapeers/ansible-role-nginx)
 
-Nginx role
-==========
+## Nginx role
 
 This role installs and configures the nginx web server. The user can specify
 any http configuration parameters they wish to apply their site. Any number of
 sites can be added with configurations of your choice.
 
-Requirements
-------------
+## Requirements
 
 This role requires Ansible 1.4 or higher and platform requirements are listed
-in the metadata file.  
-For FreeBSD a working pkgng setup is required (see: https://www.freebsd.org/doc/handbook/pkgng-intro.html )
+in the metadata file.
 
-Role Variables
---------------
+## Role Variables
 
 The variables that can be passed to this role and a brief description about
 them are as follows.
@@ -89,8 +85,7 @@ nginx_auth_basic_files:
 
 ```
 
-Examples
-========
+## Examples
 
 1) Install nginx with HTTP directives of choices, but with no sites
 configured and no additionnal configuration:
@@ -245,18 +240,17 @@ Additional configuration are created in /etc/nginx/conf.d/
                - index index.html
 ```
 
-Dependencies
-------------
+## Dependencies
 
 None
 
-License
--------
+## License
+
 BSD
 
-Author Information
-------------------
+## Author Information
 
 - Original : Benno Joy
 - Modified by : DAUPHANT Julien
+- Further modified by: Stefan Horning
 
