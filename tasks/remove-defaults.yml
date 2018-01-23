@@ -20,7 +20,7 @@
     path: "{{nginx_conf_dir}}/conf.d/default.conf"
     state: absent
   when: >
-    'default' not in nginx_configs.keys()
+    'default' not in (nginx_configs.keys() | list)
   notify:
   - restart nginx
   tags: [configuration,nginx]

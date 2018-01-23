@@ -37,7 +37,7 @@
     owner: root
     group: "{{nginx_group}}"
     mode: 0750
-  with_items: '{{ nginx_auth_basic_files.keys() }}'
+  with_items: '{{ nginx_auth_basic_files.keys() | list }}'
   tags: [configuration,nginx]
 
 - name: Create the configurations for sites
@@ -67,7 +67,7 @@
 
 - name: Create the configurations for independent config file
   template: src=config.conf.j2 dest={{nginx_conf_dir}}/conf.d/{{ item }}.conf
-  with_items: '{{ nginx_configs.keys() }}'
+  with_items: '{{ nginx_configs.keys() | list }}'
   notify:
    - restart nginx
   tags: [configuration,nginx]

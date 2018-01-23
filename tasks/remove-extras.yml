@@ -28,7 +28,7 @@
   file: name={{nginx_conf_dir}}/conf.d/{{ item }} state=absent
   with_items: '{{ config_files.stdout_lines }}'
   # 'item.conf' => 'item'
-  when: item[:-5] not in nginx_configs.keys()
+  when: item[:-5] not in (nginx_configs.keys() | list)
   notify:
    - restart nginx
   tags: [configuration,nginx]
