@@ -1,4 +1,4 @@
-#{{ ansible_managed }}
+# {{ ansible_managed }}
 
 {% if item.upstream_group is defined %}
 upstream {{ item.upstream_group.name }} {
@@ -9,7 +9,7 @@ upstream {{ item.upstream_group.name }} {
 {% endif %}
 
 {% if item.upstream is defined %}
-{% for name, conf in item.upstream.iteritems() %}
+{% for name, conf in item.upstream.items()|list %}
 upstream {{ name }} {
   {{ conf.replace(";",";\n      ") }}
 }
