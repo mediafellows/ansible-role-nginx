@@ -16,9 +16,6 @@ http {
   include {{ nginx_conf_dir }}/mime.types;
   default_type application/octet-stream;
 
-  # Hide nginx version number:
-  server_tokens off;
-
   # Virtual Host configs:
   include {{ nginx_conf_dir }}/conf.d/*.conf;
   include {{ nginx_conf_dir }}/sites-enabled/*;
