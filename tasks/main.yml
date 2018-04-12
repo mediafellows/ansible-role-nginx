@@ -1,16 +1,18 @@
 ---
 # Setup repo (optional) and install:
-- include: nginx-repo.yml
+- import_tasks: nginx-repo.yml
   when: nginx_repo is defined
-- include: nginx-installation.yml
+
+- import_tasks: nginx-installation.yml
 
 # Remove default configs and configs not managed by thins role (optional):
-- include: remove-defaults.yml
-- include: remove-extras.yml
+- import_tasks: remove-defaults.yml
+
+- import_tasks: remove-extras.yml
   when: keep_only_specified
 
 # Do the configuration of Nginx and it's sites
-- include: configuration.yml
+- import_tasks: configuration.yml
 
 - name: Start and enable the nginx service
   service:
