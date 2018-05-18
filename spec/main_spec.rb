@@ -97,13 +97,13 @@ describe "Nginx setup" do
 
   if ANSIBLE_VARS.fetch('nginx_os_tuning', true)
     describe file('/etc/security/limits.conf') do
-      its(:content) { should include('www-data    hard    nofile    30000') }
-      its(:content) { should include('www-data    soft    nofile    30000') }
+      its(:content) { should include("#{ANSIBLE_VARS.fetch('nginx_user', 'www-data')}    hard   nofile    #{ANSIBLE_VARS.fetch('nginx_os_tuning_open_files')}") }
+      its(:content) { should include("#{ANSIBLE_VARS.fetch('nginx_user', 'www-data')}    soft   nofile    #{ANSIBLE_VARS.fetch('nginx_os_tuning_open_files')}") }
     end
 
     describe file('/etc/sysctl.conf') do
-      its(:content) { should include('net.core.netdev_max_backlog = 2048') }
-      its(:content) { should include('net.core.somaxconn = 2048') }
+      its(:content) { should include("net.core.netdev_max_backlog = #{ANSIBLE_VARS.fetch('nginx_os_tuning_net_backlog', '1000')}") }
+      its(:content) { should include("net.core.somaxconn = #{ANSIBLE_VARS.fetch('nginx_os_tuning_net_maxconn', '128')}") }
     end
   end
 
