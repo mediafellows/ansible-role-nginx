@@ -95,6 +95,18 @@ describe "Nginx setup" do
     end
   end
 
+  if ANSIBLE_VARS.fetch('nginx_os_tuning', true)
+    describe file('/etc/security/limits.conf') do
+      its(:content) { should include('www-data    hard    nofile    30000') }
+      its(:content) { should include('www-data    soft    nofile    30000') }
+    end
+
+    describe file('/etc/sysctl.conf') do
+      its(:content) { should include('net.core.netdev_max_backlog = 2048') }
+      its(:content) { should include('net.core.somaxconn = 2048') }
+    end
+  end
+
   # NOT really dynamic (hardcoded filename) if params change!
   describe file('/var/log/nginx/access.log') do
     it { should be_file }
