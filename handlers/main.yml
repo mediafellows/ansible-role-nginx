@@ -3,3 +3,6 @@
   service:
     name: "{{ nginx_service_name }}"
     state: restarted
+
+- name: apply os limits
+  command: syctl -p

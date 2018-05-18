@@ -11,6 +11,9 @@
 - import_tasks: remove-extras.yml
   when: keep_only_specified
 
+- import_tasks: os-tuning.yml
+  when: nginx_os_tuning
+
 # Do the configuration of Nginx and it's sites
 - import_tasks: configuration.yml
 

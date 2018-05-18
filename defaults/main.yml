@@ -57,3 +57,14 @@ nginx_cors: false
 
 # Keeps only configs managed by this role if true
 keep_only_specified: True
+
+# OS tuning: for handling enough requests to nginx
+# increase open file limits (for nginx user) and networking
+# connection backlog size for Linux networking stack.
+# See also https://www.nginx.com/blog/tuning-nginx/
+nginx_os_tuning: false
+# Values here are what is already set by default on Ubuntu, overwrite them to make changes!
+nginx_os_tuning_open_files: 1024 # recommended: > 5000
+nginx_os_tuning_net_backlog: 1000 # recommended: 2048
+nginx_os_tuning_net_maxconn: 128 # recommended: 2048
+

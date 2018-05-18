@@ -4,5 +4,6 @@
   vars:
     test: test
     nginx_cors: true
+    nginx_os_tuning: true
   roles:
     - ansible-role-nginx
