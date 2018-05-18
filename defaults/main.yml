@@ -62,9 +62,18 @@ keep_only_specified: True
 # increase open file limits (for nginx user) and networking
 # connection backlog size for Linux networking stack.
 # See also https://www.nginx.com/blog/tuning-nginx/
+
+# Make sure you set this to true before changing values:
 nginx_os_tuning: false
-# Values here are what is already set by default on Ubuntu, overwrite them to make changes!
-nginx_os_tuning_open_files: 1024 # recommended: > 5000
-nginx_os_tuning_net_backlog: 1000 # recommended: 2048
-nginx_os_tuning_net_maxconn: 128 # recommended: 2048
+
+# Values here are what is already set by default on Linux (Ubuntu Server), overwrite them to make changes!
+
+# sets nginx user nofile limit, recommended > 3000:
+nginx_os_tuning_open_files: 1024
+
+# sets net.core.netdev_max_backlog, recommended 1000 - 3000, see also https://opensourceforu.com/2016/10/network-performance-monitoring/ :
+nginx_os_tuning_net_backlog: 1000
+
+# sets net.core.somaxconn, recommended >= 2048:
+nginx_os_tuning_net_maxconn: 128
 

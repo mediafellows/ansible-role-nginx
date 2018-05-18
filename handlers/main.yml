@@ -5,4 +5,4 @@
     state: restarted
 
 - name: apply os limits
-  command: syctl -p
+  command: sysctl -p
