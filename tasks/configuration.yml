@@ -40,6 +40,10 @@
   with_items: '{{ nginx_auth_basic_files.keys() | list }}'
   tags: [configuration,nginx]
 
+- name: Nginx sites DEBUG output
+  debug:
+    var: nginx_sites
+
 - name: Create the configurations for sites
   template:
     src: site.conf.j2
