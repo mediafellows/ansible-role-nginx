@@ -12,8 +12,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  # Setup ruby 2.3 for to run serverspec tests
-  - sudo apt-get install -y ruby
+  # Setup ruby to run serverspec tests
   - ruby -v
   - gem install serverspec
 
