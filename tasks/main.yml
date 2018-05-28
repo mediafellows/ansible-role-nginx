@@ -20,6 +20,6 @@
 - name: Enable the nginx systemd service
   systemd:
     daemon_reload: yes
-    name: "{{ nginx_service_name }}"
+    name: 'nginx.service'
     enabled: yes
   tags: [service,nginx]
