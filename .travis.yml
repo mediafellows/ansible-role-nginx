@@ -8,9 +8,6 @@ python: "2.7"
 env:
   - INVENTORY=tests/inventory; TEST_PLAY=tests/test.yml
 
-before_install:
-  - sudo apt-get update -qq
-
 install:
   # Setup ruby to run serverspec tests
   - ruby -v
