@@ -31,9 +31,10 @@ script:
   - ansible-playbook -i $INVENTORY --connection=local $TEST_PLAY
 
   # Run the role/playbook again, checking to make sure it's idempotent.
+  # Allowing 1 'change' for reading state.
   - >
     ansible-playbook -i $INVENTORY --connection=local $TEST_PLAY
-    | grep -q 'changed=0.*failed=0'
+    | grep -q 'changed=1.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
 
