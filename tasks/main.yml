@@ -17,9 +17,17 @@
 # Do the configuration of Nginx and it's sites
 - import_tasks: configuration.yml
 
-- name: Enable the nginx systemd service
+# Enable nginx service (deamon)
+
+- name: Test for systemd
+  command: systemctl
+  ignore_errors: true
+  register: systemctl_result
+
+- name: Enable the nginx systemd service (when systemd present)
   systemd:
     daemon_reload: yes
     name: 'nginx.service'
     enabled: yes
+  when: systemctl_result.failed == false
   tags: [service,nginx]
