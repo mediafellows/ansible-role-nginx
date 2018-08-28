@@ -60,6 +60,9 @@ nginx_sites:
           allow 127.0.0.1;
           deny all;
         }
+    -
+      name: custom_site_template
+      template_file: 'templates/my-nginx-site.conf.j2'
 
 # A list of hashs that define additional configuration
 nginx_configs:
