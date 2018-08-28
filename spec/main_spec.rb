@@ -11,6 +11,10 @@ describe "Nginx setup" do
     its(:version) { should > '1.8.0' }
   end
 
+  describe package('nginx-extras') do
+    it { should be_installed }
+  end
+
   describe service('nginx') do
     it { should be_enabled }
     it { should be_running }
