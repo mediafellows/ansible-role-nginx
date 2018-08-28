@@ -39,21 +39,12 @@ nginx_sites:
       - listen 80 default_server
       - server_name _
       - location / { root /var/www/html/; index index.html index.htm; }
-#      - location /cors { include nginx-cors.conf; root /var/www/html/; index index.html; }
       - location /proxy { proxy_redirect off; proxy_pass http://test; }
     upstream:
       test: 'server unix:/tmp/some.sock fail_timeout=0;'
 
 nginx_configs: {}
 nginx_auth_basic_files: {}
-
-# Set to true to add Cross Origin Resource Sharing (CORS)
-# response headers and return 204 w/o doing anything else
-# for all HTTP OPTION requests
-# This flag only causes to place the config file,
-# you still need to include it for every location
-# you want this config to be included
-nginx_cors: false
 
 # Keeps only configs managed by this role if true
 keep_only_specified: True

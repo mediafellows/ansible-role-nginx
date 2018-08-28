@@ -2,6 +2,7 @@
 user              {{ nginx_user }}  {{ nginx_group }};
 worker_processes  {{ nginx_worker_processes }};
 pid               {{ nginx_pid_file }};
+include           {{ nginx_conf_dir }}/modules-enabled/*.conf;
 
 events {
 {% for param in nginx_events_params %}
