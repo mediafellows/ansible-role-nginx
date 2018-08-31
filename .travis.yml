@@ -43,3 +43,6 @@ script:
 
   # Run serverspec
   - rake spec
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
