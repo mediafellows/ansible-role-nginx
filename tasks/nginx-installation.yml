@@ -1,10 +1,9 @@
 ---
 - name: Install the nginx package
   apt:
-    name: "{{ item }}"
+    name:
+      - nginx
+      - nginx-extras
     state: present
-  with_items:
-    - nginx
-    - nginx-extras
   tags: [packages,nginx]
 
