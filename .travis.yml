@@ -6,7 +6,7 @@ addons:
     update: true
 
 language: python
-python: "2.7"
+python: "3.5"
 
 env:
   - INVENTORY=tests/inventory; TEST_PLAY=tests/test.yml
