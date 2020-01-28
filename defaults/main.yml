@@ -67,4 +67,3 @@ nginx_os_tuning_net_backlog: 1000
 
 # sets net.core.somaxconn, recommended >= 2048:
 nginx_os_tuning_net_maxconn: 128
-

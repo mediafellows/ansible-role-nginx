@@ -5,5 +5,4 @@
       - nginx
       - nginx-extras
     state: present
-  tags: [packages,nginx]
-
+  tags: [packages, nginx]

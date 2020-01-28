@@ -26,8 +26,8 @@
 
 - name: Enable the nginx systemd service (when systemd present)
   systemd:
-    daemon_reload: yes
+    daemon_reload: true
     name: 'nginx.service'
-    enabled: yes
+    enabled: true
   when: systemctl_result.failed == false
-  tags: [service,nginx]
+  tags: [service, nginx]

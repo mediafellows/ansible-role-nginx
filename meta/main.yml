@@ -1,17 +1,23 @@
 ---
 galaxy_info:
   author: "DAUPHANT Julien, Stefan Horning"
+  description: Nginx installation and configuration
   license: BSD
-  min_ansible_version: 2.4
-  platforms:
-   - name: Ubuntu
-     versions:
-      - precise
-      - quantal
-      - raring
-      - saucy
-      - trusty
-  categories:
-   - web
-dependencies: []
 
+  min_ansible_version: 2.5
+  platforms:
+    - name: Ubuntu
+      versions:
+        - precise
+        - quantal
+        - raring
+        - saucy
+        - trusty
+
+  galaxy_tags:
+    - web
+    - server
+    - nginx
+    - http
+
+dependencies: []

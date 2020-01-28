@@ -3,12 +3,11 @@
   apt_key:
     url: 'http://nginx.org/keys/nginx_signing.key'
   when: nginx_repo is match("deb http://nginx.org/packages/.*")
-  tags: [packages,nginx]
+  tags: [packages, nginx]
 
 - name: Add given nginx repo
   apt_repository:
     repo: "{{ nginx_repo }}"
     state: present
-    update_cache: yes
-  tags: [packages,nginx]
-
+    update_cache: true
+  tags: [packages, nginx]
