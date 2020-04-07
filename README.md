@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/mediapeers/ansible-role-nginx.svg)](https://travis-ci.com/mediapeers/ansible-role-nginx)
+[![Build Status](https://travis-ci.com/mediafellows/ansible-role-nginx.svg)](https://travis-ci.com/mediafellows/ansible-role-nginx)
 
 ## Nginx role
 
