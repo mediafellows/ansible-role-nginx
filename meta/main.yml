@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: nginx
   author: "DAUPHANT Julien, Stefan Horning"
   description: Nginx installation and configuration
   license: BSD
