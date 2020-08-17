@@ -1,7 +1,9 @@
 ---
 # Setup repo (optional) and install:
 - import_tasks: nginx-repo.yml
-  when: nginx_repo is defined
+  when:
+    - nginx_repo is defined
+    - nginx_repo is search('nginx')
 
 - import_tasks: nginx-installation.yml
 
