@@ -1,4 +1,4 @@
-[]()
+[![Ansible-Test](https://github.com/mediafellows/ansible-role-nginx/workflows/Ansible-Test/badge.svg)](https://github.com/mediafellows/ansible-role-nginx/actions?query=workflow%3AAnsible-Test)
 
 ## Nginx role
 
