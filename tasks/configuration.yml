@@ -1,6 +1,6 @@
 ---
 - name: Create the directories for site specific configurations
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_conf_dir }}/{{ item }}"
     state: directory
     owner: root
@@ -14,7 +14,7 @@
   tags: [configuration, nginx]
 
 - name: Ensure log directory exist
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_log_dir }}"
     state: directory
     owner: "{{ nginx_user }}"
@@ -23,7 +23,7 @@
   tags: [configuration, nginx]
 
 - name: Create the nginx.conf configuration file
-  template:
+  ansible.builtin.template:
     src: nginx.conf.j2
     dest: "{{ nginx_conf_dir }}/nginx.conf"
   notify:
@@ -31,7 +31,7 @@
   tags: [configuration, nginx]
 
 - name: Ensure auth_basic files created
-  template:
+  ansible.builtin.template:
     src: auth_basic.j2
     dest: "{{ nginx_conf_dir }}/auth_basic/{{ item }}"
     owner: root
@@ -41,11 +41,11 @@
   tags: [configuration, nginx]
 
 - name: Nginx sites DEBUG output
-  debug:
+  ansible.builtin.debug:
     var: nginx_sites
 
 - name: Create the configurations for sites from nginx roles template
-  template:
+  ansible.builtin.template:
     src: site.conf.j2
     dest: "{{ nginx_conf_dir }}/sites-available/{{ item.name }}.conf"
   when: item.template_file is undefined
@@ -55,7 +55,7 @@
   tags: [configuration, nginx]
 
 - name: Create the configurations for sites from custom template
-  template:
+  ansible.builtin.template:
     src: "{{ item.template_file }}"
     dest: "{{ nginx_conf_dir }}/sites-available/{{ item.name }}.conf"
   when: item.template_file is defined
@@ -65,7 +65,7 @@
   tags: [configuration, nginx]
 
 - name: Create links to enable sites (in sites-enabled)
-  file:
+  ansible.builtin.file:
     state: link
     src: "{{ nginx_conf_dir }}/sites-available/{{ item.name }}.conf"
     dest: "{{ nginx_conf_dir }}/sites-enabled/{{ item.name }}.conf"
@@ -75,7 +75,7 @@
   tags: [configuration, nginx]
 
 - name: Create the configurations for independent config file
-  template:
+  ansible.builtin.template:
     src: config.conf.j2
     dest: "{{ nginx_conf_dir }}/conf.d/{{ item }}.conf"
   with_items: '{{ nginx_configs.keys() | list }}'
@@ -84,7 +84,8 @@
   tags: [configuration, nginx]
 
 - name: Check nginx syntax of configuration files
-  shell: "{{ nginx_binary_name }} -t"
+  ansible.builtin.shell:
+    cmd: "{{ nginx_binary_name }} -t"
   register: result
   changed_when: "result.rc != 0"
   check_mode: false

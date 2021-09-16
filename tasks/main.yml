@@ -1,33 +1,34 @@
 ---
 # Setup repo (optional) and install:
-- import_tasks: nginx-repo.yml
+- ansible.builtin.import_tasks: nginx-repo.yml
   when:
     - nginx_repo is defined
     - nginx_repo is search('nginx')
 
-- import_tasks: nginx-installation.yml
+- ansible.builtin.import_tasks: nginx-installation.yml
 
 # Remove default configs and configs not managed by thins role (optional):
-- import_tasks: remove-defaults.yml
+- ansible.builtin.import_tasks: remove-defaults.yml
 
-- import_tasks: remove-extras.yml
+- ansible.builtin.import_tasks: remove-extras.yml
   when: keep_only_specified
 
-- import_tasks: os-tuning.yml
+- ansible.builtin.import_tasks: os-tuning.yml
   when: nginx_os_tuning
 
 # Do the configuration of Nginx and it's sites
-- import_tasks: configuration.yml
+- ansible.builtin.import_tasks: configuration.yml
 
 # Enable nginx service (deamon)
 
 - name: Test for systemd
-  command: systemctl
+  ansible.builtin.command:
+    cmd: systemctl
   ignore_errors: true
   register: systemctl_result
 
 - name: Enable the nginx systemd service (when systemd present)
-  systemd:
+  ansible.builtin.systemd:
     daemon_reload: true
     name: 'nginx.service'
     enabled: true

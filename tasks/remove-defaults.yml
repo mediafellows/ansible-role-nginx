@@ -1,6 +1,6 @@
 ---
 - name: Disable the default site
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_conf_dir }}/sites-enabled/default"
     state: absent
   notify:
@@ -8,7 +8,7 @@
   tags: [configuration, nginx]
 
 - name: Remove the default site config
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_conf_dir }}/sites-available/default"
     state: absent
   notify:
@@ -16,7 +16,7 @@
   tags: [configuration, nginx]
 
 - name: Remove the default configuration in conf.d
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_conf_dir }}/conf.d/default.conf"
     state: absent
   when: >

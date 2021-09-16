@@ -1,6 +1,6 @@
 ---
 - name: Install the nginx package
-  apt:
+  ansible.builtin.apt:
     name:
       - nginx
       - nginx-extras

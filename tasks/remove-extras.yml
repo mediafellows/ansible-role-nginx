@@ -1,16 +1,17 @@
 ---
 - name: Find enabled sites
-  shell: ls -1 {{ nginx_conf_dir }}/sites-enabled
+  ansible.builtin.shell:
+    cmd: ls -1 {{ nginx_conf_dir }}/sites-enabled
   register: enabled_sites
   changed_when: false
   tags: [configuration, nginx]
 
 - name: Get names of configured sites
-  set_fact:
+  ansible.builtin.set_fact:
     configured_sites: "{{ nginx_sites | map(attribute='name') | list }}"
 
 - name: Disable unmanaged sites
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_conf_dir }}/sites-enabled/{{ item }}"
     state: absent
   with_items: '{{ enabled_sites.stdout_lines }}'
@@ -21,13 +22,14 @@
   tags: [configuration, nginx]
 
 - name: Find config files
-  shell: ls -1 {{ nginx_conf_dir }}/conf.d
+  ansible.builtin.shell:
+    cmd: ls -1 {{ nginx_conf_dir }}/conf.d
   register: config_files
   changed_when: false
   tags: [configuration, nginx]
 
 - name: Remove unmanaged config files
-  file:
+  ansible.builtin.file:
     name: "{{ nginx_conf_dir }}/conf.d/{{ item }}"
     state: absent
   with_items: '{{ config_files.stdout_lines }}'

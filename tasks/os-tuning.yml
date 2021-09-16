@@ -2,16 +2,15 @@
 # Tune OS limits to better handle network and nginx connections
 
 - name: Set open file limit (hard) for nginx user
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/security/limits.conf
     regexp: '^{{ nginx_user }}.+hard'
     line: '{{ nginx_user }}    hard   nofile    {{ nginx_os_tuning_open_files }}'
   notify:
     - restart nginx
 
-
 - name: Set open file limit (soft) for nginx user
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/security/limits.conf
     regexp: '^{{ nginx_user }}.+soft'
     line: '{{ nginx_user }}    soft   nofile    {{ nginx_os_tuning_open_files }}'
@@ -19,7 +18,7 @@
     - restart nginx
 
 - name: Set network connection backlog size OS wide
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysctl.conf
     regexp: 'net\.core\.netdev_max_backlog'
     line: 'net.core.netdev_max_backlog = {{ nginx_os_tuning_net_backlog }}'
@@ -28,7 +27,7 @@
     - apply os limits
 
 - name: Set network max connections OS wide
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/sysctl.conf
     regexp: 'net\.core\.somaxconn'
     line: 'net.core.somaxconn = {{ nginx_os_tuning_net_maxconn }}'
