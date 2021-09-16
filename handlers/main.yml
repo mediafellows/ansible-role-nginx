@@ -5,4 +5,5 @@
     state: restarted
 
 - name: apply os limits
-  command: sysctl -p
+  ansible.builtin.command:
+    cmd: sysctl -p
