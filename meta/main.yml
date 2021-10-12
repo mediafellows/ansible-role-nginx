@@ -22,3 +22,12 @@ galaxy_info:
     - http
 
 dependencies: []
+
+# Since Ansible 2.11 the de-duplication of depency role runs has been changed (or broken?),
+# as even when called with different params through a different invocation of the parent role (let's say in a loop with include_role)
+# the role dependencies are only executed once in the entire play. There is a hint of this in the docs
+# here https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#running-role-dependencies-multiple-times-in-one-playbook
+# To my understanding different vars would be sufficient to avoid de-duplication, yet the following
+# allow_duplicates flag is needed to ensure the nginx role is used to setup multiple sites
+# (as it frequently gets called as a depency of other roles that pass differe vars to it in same play).
+allow_duplicates: true
