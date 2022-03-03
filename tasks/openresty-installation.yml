@@ -7,7 +7,7 @@
 
 - name: Add given Openresty (NGINX distribution) repo
   ansible.builtin.apt_repository:
-    repo: "deb http://openresty.org/package/ubuntu {{ ansible_distribution_version }} main"
+    repo: "deb http://openresty.org/package/ubuntu {{ ansible_distribution_release }} main"
     state: present
     update_cache: true
 
