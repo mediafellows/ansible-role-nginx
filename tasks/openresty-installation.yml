@@ -27,6 +27,10 @@
   ansible.builtin.set_fact:
     nginx_conf_dir: /usr/local/openresty/nginx/conf
 
+- name: Set nginx_binary_name to /usr/local/openresty/nginx/sbin/nginx
+  ansible.builtin.set_fact:
+    nginx_binary_name: /usr/local/openresty/nginx/sbin/nginx
+
 - name: Add a symlink from /etc/nginx to openresty nginx dir in {{ nginx_conf_dir }}
   ansible.builtin.file:
     src: /usr/local/openresty/nginx/conf/
