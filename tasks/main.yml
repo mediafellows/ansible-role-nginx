@@ -6,6 +6,10 @@
     - nginx_repo is search('nginx')
 
 - ansible.builtin.import_tasks: nginx-installation.yml
+  when: nginx_distribution == 'nginx'
+
+- ansible.builtin.import_tasks: openresty-installation.yml
+  when: nginx_distribution == 'openresty'
 
 # Remove default configs and configs not managed by thins role (optional):
 - ansible.builtin.import_tasks: remove-defaults.yml
@@ -30,7 +34,7 @@
 - name: Enable the nginx systemd service (when systemd present)
   ansible.builtin.systemd:
     daemon_reload: true
-    name: 'nginx.service'
+    name: '{{ nginx_service_name }}.service'
     enabled: true
   when: systemctl_result.failed == false
   tags: [service, nginx]

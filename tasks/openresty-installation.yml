@@ -1,0 +1,38 @@
+---
+
+- name: Install Openresty repo key
+  ansible.builtin.apt_key:
+    url: 'https://openresty.org/package/pubkey.gpg'
+  tags: [packages, openresty]
+
+- name: Add given Openresty (NGINX distribution) repo
+  ansible.builtin.apt_repository:
+    repo: "deb http://openresty.org/package/ubuntu {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+
+- name: Install OpenResty package (Nginx setup with LUA etc)
+  ansible.builtin.apt:
+    name: openresty
+    state: present
+
+- name: Add nginx alias to openresy systemd unit
+  ansible.builtin.lineinfile:
+    path: /lib/systemd/system/openresty.service
+    insertafter: EOF
+    line: 'Alias=ngxin.service'
+    state: present
+
+- name: Set nginx_conf_dir to /usr/local/openresty/nginx/conf
+  ansible.builtin.set_fact:
+    nginx_conf_dir: /usr/local/openresty/nginx/conf
+
+- name: Set nginx_binary_name to /usr/local/openresty/nginx/sbin/nginx
+  ansible.builtin.set_fact:
+    nginx_binary_name: /usr/local/openresty/nginx/sbin/nginx
+
+- name: Add a symlink from /etc/nginx to openresty nginx dir in {{ nginx_conf_dir }}
+  ansible.builtin.file:
+    src: /usr/local/openresty/nginx/conf/
+    dest: /etc/nginx
+    state: link

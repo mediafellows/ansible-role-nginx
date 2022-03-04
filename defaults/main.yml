@@ -1,12 +1,17 @@
 ---
+
+# change to openresty to install the openresty distribution of Nginx with LUA support
+# see https://openresty.org/en/
+nginx_distribution: nginx
+nginx_conf_dir: /etc/nginx
+
 nginx_repo: "ppa:nginx/stable"
 
 nginx_binary_name: nginx
-nginx_service_name: "{{nginx_binary_name}}"
-nginx_conf_dir: /etc/nginx
+nginx_service_name: "{{ nginx_distribution }}"
 
 nginx_user: "www-data"
-nginx_group: "{{nginx_user}}"
+nginx_group: "{{ nginx_user }}"
 
 nginx_pid_file: /var/run/{{nginx_service_name}}.pid
 
