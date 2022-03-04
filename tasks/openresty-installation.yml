@@ -16,11 +16,11 @@
     name: openresty
     state: present
 
-- name: Add nginx alias to openresy systemd unit
+- name: Add nginx alias to openresty systemd unit
   ansible.builtin.lineinfile:
     path: /lib/systemd/system/openresty.service
     insertafter: EOF
-    line: 'Alias=ngxin.service'
+    line: 'Alias=nginx.service'
     state: present
 
 - name: Set nginx_conf_dir to /usr/local/openresty/nginx/conf
