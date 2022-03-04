@@ -1,7 +1,9 @@
-#{{ ansible_managed }}
+# {{ ansible_managed }}
 user              {{ nginx_user }}  {{ nginx_group }};
 worker_processes  {{ nginx_worker_processes }};
+{% if nginx_distribution != "openresty" %}
 pid               {{ nginx_pid_file }};
+{% endif %}
 include           {{ nginx_conf_dir }}/modules-enabled/*.conf;
 
 events {
