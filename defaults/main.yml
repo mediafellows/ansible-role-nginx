@@ -29,8 +29,13 @@ nginx_http_params:
   - types_hash_max_size 2048
   - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
   - ssl_prefer_server_ciphers on
-  - gzip on
-  - gzip_disable "msie6"
+  - gzip on;
+  - gzip_min_length 1024;
+  - gzip_comp_level 2;
+  - gzip_vary on;
+  - gzip_disable msie6;
+  - gzip_proxied expired no-cache no-store private auth;
+  - gzip_types text/css text/plain text/javascript application/x-javascript application/javascript application/json
   - server_tokens off
   - log_format graylog_format '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" <msec=$msec|connection=$connection|connection_requests=$connection_requests|millis=$request_time>'
   - access_log "{{nginx_log_dir}}/access.log"
