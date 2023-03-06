@@ -18,6 +18,9 @@ nginx_pid_file: /var/run/{{nginx_service_name}}.pid
 nginx_worker_processes: auto # use number or auto
 nginx_log_dir: /var/log/nginx
 
+# Example of Graylog format, overwrite to your own format!
+nginx_access_log_format: '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" <msec=$msec|connection=$connection|connection_requests=$connection_requests|millis=$request_time>'
+
 nginx_events_params:
   - worker_connections {% if nginx_max_clients is defined %}{{nginx_max_clients}}{% else %}768{% endif %}
 
@@ -37,7 +40,7 @@ nginx_http_params:
   - gzip_proxied expired no-cache no-store private auth;
   - gzip_types text/css text/plain text/javascript application/x-javascript application/javascript application/json
   - server_tokens off
-  - log_format graylog_format '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" <msec=$msec|connection=$connection|connection_requests=$connection_requests|millis=$request_time>'
+  - log_format custom_access_log_format '{{ nginx_access_log_format }}'
   - access_log "{{nginx_log_dir}}/access.log"
   - error_log "{{nginx_log_dir}}/error.log"
 
