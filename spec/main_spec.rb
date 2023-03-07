@@ -25,7 +25,7 @@ describe "Nginx setup" do
   describe file("#{nginx_conf_dir}/nginx.conf") do
     it { should be_file }
     config_string = ANSIBLE_VARS.fetch('nginx_http_params', 'FAIL').join(";\n  ")
-    config_string.gsub!(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1, 'NOT FOUND') }
+    config_string.gsub!(/{{(.+)}}/){ ANSIBLE_VARS.fetch($1.to_s.strip, 'NOT FOUND') }
     its(:content) { should include("  #{config_string}") }
   end
 
