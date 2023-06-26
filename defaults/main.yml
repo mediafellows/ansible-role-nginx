@@ -5,7 +5,7 @@
 nginx_distribution: nginx
 nginx_conf_dir: /etc/nginx
 
-nginx_repo: "ppa:nginx/stable"
+nginx_repo: "deb http://nginx.org/packages/ubuntu {{ ansible_distribution_release }} nginx"
 
 nginx_binary_name: nginx
 nginx_service_name: "{{ nginx_distribution }}"

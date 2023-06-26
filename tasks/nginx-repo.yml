@@ -5,7 +5,7 @@
   when: nginx_repo is match("deb http://nginx.org/packages/.*")
   tags: [packages, nginx]
 
-- name: Add given nginx repo
+- name: Add given Nginx Repo
   ansible.builtin.apt_repository:
     repo: "{{ nginx_repo }}"
     state: present
