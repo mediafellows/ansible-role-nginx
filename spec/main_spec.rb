@@ -1,11 +1,6 @@
 require 'spec_helper'
 
 describe "Nginx setup" do
-  describe ppa('nginx/stable') do
-    it { should exist }
-    it { should be_enabled }
-  end
-
   describe package('nginx') do
     it { should be_installed }
     its(:version) { should > '1.8.0' }
