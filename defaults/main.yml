@@ -5,6 +5,8 @@
 nginx_distribution: nginx
 nginx_conf_dir: /etc/nginx
 
+nginx_extras_package_install: true
+
 nginx_repo: "deb http://nginx.org/packages/ubuntu {{ ansible_distribution_release }} nginx"
 
 nginx_binary_name: nginx
