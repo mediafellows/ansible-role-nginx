@@ -3,6 +3,14 @@
   ansible.builtin.apt:
     name:
       - nginx
+    state: present
+  when: not nginx_extras_package_install
+  tags: [packages, nginx]
+
+- name: Install the nginx-extras package
+  ansible.builtin.apt:
+    name:
       - nginx-extras
     state: present
+  when: nginx_extras_package_install
   tags: [packages, nginx]
