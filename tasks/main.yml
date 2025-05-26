@@ -11,7 +11,9 @@
 - ansible.builtin.import_tasks: openresty-installation.yml
   when: nginx_distribution == 'openresty'
 
-# Remove default configs and configs not managed by thins role (optional):
+- ansible.builtin.import_tasks: ensure-dirs.yml
+
+# Remove default configs and configs not managed by this role (optional):
 - ansible.builtin.import_tasks: remove-defaults.yml
 
 - ansible.builtin.import_tasks: remove-extras.yml
